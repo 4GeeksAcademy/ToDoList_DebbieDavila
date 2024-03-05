@@ -1,46 +1,54 @@
+import { array } from "prop-types";
 import React, { useState } from "react";
 
-//include images into your bundle
 
-
-//create your first component
-const Home = () => {
+export default function Home() {
 	const [todos, setTodos] = useState([]);
-	const [ inputValue, setInputValue ] = useState("");
-	
+	const [inputValue, setInputValue] = useState("");
+
 	const keyUpHandler = (e) => {
-	if(e.key == "Enter") {
-		setTodos([...todos, inputValue]);
-		setInputValue("")
-	}	
-	} 
+		if (e.key == "Enter") {
+			setTodos([...todos, inputValue]);
+			setInputValue("")
+		}
+	}
+	function onDelete(task, index) {
+
+		setTodos(function (currentTodos) {
+			console.log(currentTodos);
+			currentTodos.splice(index, 1)
+			console.log(currentTodos);
+			return [...currentTodos]
+		})
+		setInputValue('')
+	}
+
 	return (
 		<div className="container">
-
 			<h1>My ToDo's</h1>
-			
-			
-				<input 
-				type="text" 
+			<input
+				type="text"
 				onChange={(e) => setInputValue(e.target.value)}
 				value={inputValue}
 				onKeyUp={(e) => keyUpHandler(e)}
-				placeholder="What's on the to do today?"/>
-				<ul>
-					{todos.map(
-						(task, index) => {
-						return <li key={index}>{task}<i className="fa-solid fa-trash-can"></i>
-						</li>}
-					)}
-				
-				
+				placeholder="What's on the to do today?" />
+			<ul>
+				{todos.map(
+					(task, index) => {
+						return <li key={index}>{task}<i className="fa-solid fa-trash-can" onClick={() => {
+							console.log("click");
+							onDelete(task, index)
+						}}></i>
+						</li>
+					}
+				)}
 			</ul>
-			<div>23 items</div>
+			<div>{todos.length}</div>
 		</div>
-		
-		
-		
-		
+
+
+
+
 		/*<div className="text-center">
 			<h1 className="text-center mt-5">Hello Rigo!</h1>
 			<p>
@@ -58,4 +66,4 @@ const Home = () => {
 	);
 };
 
-export default Home;
+
